@@ -15,8 +15,8 @@ Import-Module ActiveDirectory
 
 #Definindo Constantes de acesso ao Sharepoint
 
-#$tenantUrl = "https://petrobrasbrteste.sharepoint.com/teams/"
-#$AdminUrl = "https://petrobrasbrteste-admin.sharepoint.com/"
+#$tenantUrl = "http
+#$AdminUrl = 
 
 #Definindo Constantes de credenciais
 

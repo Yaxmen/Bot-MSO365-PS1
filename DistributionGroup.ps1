@@ -14,24 +14,24 @@ Param (
 )
 
 #------------------------------------------------------------------------------------------#
-# Este script tem a finalidade de atender as solicitações de "Criação/Alteração/Exclusão   #
-# de lista de distribuição - Outlook"                                                      #
+# Este script tem a finalidade de atender as solicitaÃ§Ãµes de "CriaÃ§Ã£o/AlteraÃ§Ã£o/ExclusÃ£o   #
+# de lista de distribuiÃ§Ã£o - Outlook"                                                      #
 #                                                                                          #
-# Ele recebe por parametro os Nomes e Email atual da lista e o novo nome e novo email da   #
-# lista e executa o seguinte:                                                              #
-#   1) Verifica se a lista de distribuição existe                                          #
-#   2) Verifica qual é a demanda                                                           #
-#   3) Verifica se o Novo Email está disponível                                            #
-#   4) Executa as alterações                                                               #
+# Ele recebe por parametro os Nomes e Email atual da lista e o novo nome e novo email daÂ Â Â #
+# lista e executa o seguinte:Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  #
+#Â Â  1) Verifica se a lista de distribuiÃ§Ã£o existeÂ Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  #
+#Â Â  2) Verifica qual Ã© a demandaÂ Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  #
+#Â Â  3) Verifica se o Novo Email estÃ¡ disponÃ­velÂ Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  #
+#Â Â  4) Executa as alteraÃ§ÃµesÂ Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â  #
 #------------------------------------------------------------------------------------------#
 
-$username = "SAMSAZU@petrobras.com.br"
+$username = "email"
 $msolKeyAuth = (3,4,2,3,56,34,254,222,1,1,2,23,42,54,33,233,1,34,2,7,6,5,35,43)
 $password = Get-Content "D:\Password\password.txt" -ErrorAction Stop | ConvertTo-SecureString -Key $msolKeyAuth -ErrorAction Stop
 $credential = New-Object -typename System.Management.Automation.PSCredential -argumentlist $username,$password -ErrorAction Stop
 
-#$username = "SAN3MSOFFICE@petrobrasbrteste.petrobras.com.br"
-#$PlainPassword="Ror66406"
+#$username = "email"
+#$PlainPassword="senha"
 #$SecurePassword = $PlainPassword | ConvertTo-SecureString -AsPlainText -Force
 #$Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $UserName, $SecurePassword
 
@@ -76,7 +76,7 @@ catch {
     }
 }
 
-#Função para adicionar membros a um grupo Recém criado (Que não possui nenhum membro ainda)
+#FunÃ§Ã£o para adicionar membros a um grupo RecÃ©m criado (Que nÃ£o possui nenhum membro ainda)
 function AddMembersToNewDistributionGroup($DistributionGroup, $Members){
 
     # Criando Arrays de Sucesso e falha 
@@ -84,7 +84,7 @@ function AddMembersToNewDistributionGroup($DistributionGroup, $Members){
     $FailedListMembers = [System.Collections.ArrayList]::new()
 
 
-    # Percorrendo o Array de Membros para executar a inserção
+    # Percorrendo o Array de Membros para executar a inserÃ§Ã£o
     foreach($Member in $Members){
         
         $MemberMailBox = Get-Mailbox -Identity $Member -ErrorAction SilentlyContinue
@@ -103,7 +103,7 @@ function AddMembersToNewDistributionGroup($DistributionGroup, $Members){
 
     if($SuccessListMembers.Length -gt 0){
     
-        Log -message "Sucesso na Inserção dos membros no grupo:"
+        Log -message "Sucesso na InserÃ§Ã£o dos membros no grupo:"
 
         foreach($Member in $SuccessListMembers){
             
@@ -112,7 +112,7 @@ function AddMembersToNewDistributionGroup($DistributionGroup, $Members){
 
         if($FailedListMembers -gt 0){
             
-            Log "Atenção: Os seguintes usuários não foram inseridos por não serem localizados no Exchange:"
+            Log "AtenÃ§Ã£o: Os seguintes usuÃ¡rios nÃ£o foram inseridos por nÃ£o serem localizados no Exchange:"
 
             foreach($Member in $FailedListMembers){
                 
@@ -122,14 +122,14 @@ function AddMembersToNewDistributionGroup($DistributionGroup, $Members){
         
     } else {
         
-        Log "*Erro*: Não houveram casos de sucesso na Inserção de Membros"
+        Log "*Erro*: NÃ£o houveram casos de sucesso na InserÃ§Ã£o de Membros"
         exit 1
     }
 
 
 }
 
-# Função para adicionar membros a uma lista de distribuição
+# FunÃ§Ã£o para adicionar membros a uma lista de distribuiÃ§Ã£o
 function AddMembersToDistributionGroup($DistributionGroup, $Members) {
 
     # Capturando os Membros
@@ -143,20 +143,20 @@ function AddMembersToDistributionGroup($DistributionGroup, $Members) {
     # Checando se existem membros para serem inseridos
     if(($Members[0] -eq "N") -or ($Members[1] -eq "A")){
         
-        log "Não foi solicitado a inclusão de nenhum membro na Lista de Distribuição"
+        log "NÃ£o foi solicitado a inclusÃ£o de nenhum membro na Lista de DistribuiÃ§Ã£o"
     
     } else {
         
         # Percorrendo todos os Membros
         foreach ($Member in $Members){
             
-            # Capturando o usuário atual
+            # Capturando o usuÃ¡rio atual
             $MemberMailBox = Get-Mailbox -Identity $Member -ErrorAction SilentlyContinue
 
-            # Verifica se o Usuário existe
+            # Verifica se o UsuÃ¡rio existe
             if($MemberMailBox){
                 
-                # Verifica se o usuário já está na lista de distribuição
+                # Verifica se o usuÃ¡rio jÃ¡ estÃ¡ na lista de distribuiÃ§Ã£o
                 if($DistributionGroupMembers.Name.Contains($MemberMailBox.Alias)){
 
                     $AlreadyIncludeMemberList.Add($MemberMailBox.Alias)
@@ -173,10 +173,10 @@ function AddMembersToDistributionGroup($DistributionGroup, $Members) {
         }
 
 
-        # Verificando se houveram usuários não inseridos por já serem membros do grupo
+        # Verificando se houveram usuÃ¡rios nÃ£o inseridos por jÃ¡ serem membros do grupo
         if ($AlreadyIncludeMemberList.Length -gt 0){
         
-            Log "Atenção, os seguintes usuários não foram inclusos pois já eram membros da lista de distribuição:"
+            Log "AtenÃ§Ã£o, os seguintes usuÃ¡rios nÃ£o foram inclusos pois jÃ¡ eram membros da lista de distribuiÃ§Ã£o:"
 
             foreach ($User in $AlreadyIncludeMemberList){
             
@@ -184,10 +184,10 @@ function AddMembersToDistributionGroup($DistributionGroup, $Members) {
             }
         }
 
-        # Verificando se houveram usuários não inseridos pois não foram localizados no Exchange
+        # Verificando se houveram usuÃ¡rios nÃ£o inseridos pois nÃ£o foram localizados no Exchange
         if ($FailedListMembers.Length -gt 0){
         
-            Log "Atenção, os seguintes usuários não foram inclusos pois não foram localizados no Exchange:"
+            Log "AtenÃ§Ã£o, os seguintes usuÃ¡rios nÃ£o foram inclusos pois nÃ£o foram localizados no Exchange:"
 
             foreach ($User in $FailedListMembers){
             
@@ -206,13 +206,13 @@ function AddMembersToDistributionGroup($DistributionGroup, $Members) {
 
         } else {
         
-            Log "ERRO: Não houve nenhum caso de sucesso na inserção de Membros"
+            Log "ERRO: NÃ£o houve nenhum caso de sucesso na inserÃ§Ã£o de Membros"
             exit 1
         }
     }
 }
 
-# Função para adicionar proprietários a uma lista de distribuição
+# FunÃ§Ã£o para adicionar proprietÃ¡rios a uma lista de distribuiÃ§Ã£o
 function AddOwnersToDistributionGroup($DistributionGroup, $Owners){
     
     # Criando Array de Falha e Sucesso para Onwers
@@ -220,14 +220,14 @@ function AddOwnersToDistributionGroup($DistributionGroup, $Owners){
     $FailedListOwners = [System.Collections.ArrayList]::new()
     $AlreadyIsOwnerList = [System.Collections.ArrayList]::new()
 
-    # Checando se foi solicitado a inclusão de proprietários
+    # Checando se foi solicitado a inclusÃ£o de proprietÃ¡rios
     if(($Owners[0] -eq "N") -or ($Owners[1] -eq "A")){
 
-        Log "Não foi solicitado a inclusão de nenhum Proprietário na Lista de Distribuição"
+        Log "NÃ£o foi solicitado a inclusÃ£o de nenhum ProprietÃ¡rio na Lista de DistribuiÃ§Ã£o"
 
     } else {
         
-        # Percorrendo a lista de proprietários
+        # Percorrendo a lista de proprietÃ¡rios
         foreach($Owner in $Owners){
             
             # Validando se a chave existe no Exchange
@@ -235,14 +235,14 @@ function AddOwnersToDistributionGroup($DistributionGroup, $Owners){
 
             if($OwnerBox){
 
-                # Verificando se o usuário já é proprietário
+                # Verificando se o usuÃ¡rio jÃ¡ Ã© proprietÃ¡rio
                 if($DistributionGroup.ManagedBy.Contains($OwnerBox.Alias)){
                     
                     $AlreadyIsOwnerList.Add($OwnerBox.Alias) | Out-Null
                 
                 } else{
                     
-                    # Adiciona o usuário na lista de proprietários
+                    # Adiciona o usuÃ¡rio na lista de proprietÃ¡rios
                     $DistributionGroup.ManagedBy.Add($OwnerBox.Alias) | Out-Null
 
                     $SuccessListOwners.Add($OWnerBox.Alias) | Out-Null
@@ -254,14 +254,14 @@ function AddOwnersToDistributionGroup($DistributionGroup, $Owners){
             }
         }
 
-        # Atualizando a lista de proprietários na Tenant
+        # Atualizando a lista de proprietÃ¡rios na Tenant
         Set-DistributionGroup -Identity $DistributionGroup.Alias -ManagedBy $DistributionGroup.ManagedBy | Out-Null
 
 
-        # Verificando se houveram usuários não inseridos pois já eram proprietários da lista de distribuição
+        # Verificando se houveram usuÃ¡rios nÃ£o inseridos pois jÃ¡ eram proprietÃ¡rios da lista de distribuiÃ§Ã£o
         if($AlreadyIsOwnerList.Length -gt 0){
 
-            Log "ATENÇÃO: os seguintes usuários não foram inclusos na lista de distribuição pois já eram proprietários"
+            Log "ATENÃ‡ÃƒO: os seguintes usuÃ¡rios nÃ£o foram inclusos na lista de distribuiÃ§Ã£o pois jÃ¡ eram proprietÃ¡rios"
 
             foreach($User in $AlreadyIsOwnerList){
                 
@@ -270,10 +270,10 @@ function AddOwnersToDistributionGroup($DistributionGroup, $Owners){
             }
         }
 
-        # Verificando se houveram usuários não inseridos pois não foram localizados no Exchange
+        # Verificando se houveram usuÃ¡rios nÃ£o inseridos pois nÃ£o foram localizados no Exchange
         if($FailedListOwners.Length -gt 0){
             
-            Log "ATENÇÃO: os seguintes usuários não foram inclusos na lista de dsitrbuição pois não foram localizados no Exchange"
+            Log "ATENÃ‡ÃƒO: os seguintes usuÃ¡rios nÃ£o foram inclusos na lista de dsitrbuiÃ§Ã£o pois nÃ£o foram localizados no Exchange"
 
             foreach($User in $FailedListOwners){
 
@@ -281,10 +281,10 @@ function AddOwnersToDistributionGroup($DistributionGroup, $Owners){
             }
         }
 
-        # Verificando se houveram usuários inseridos na Lista de distirbuição e encerrando o chamado
+        # Verificando se houveram usuÃ¡rios inseridos na Lista de distirbuiÃ§Ã£o e encerrando o chamado
         if($SuccessListOwners.Length -gt 0){
             
-            Log "SUCESSO: Os seguintes usuários foram incluídos como proprietários da Lista de Distribuição"
+            Log "SUCESSO: Os seguintes usuÃ¡rios foram incluÃ­dos como proprietÃ¡rios da Lista de DistribuiÃ§Ã£o"
 
             foreach($User in $SuccessListOwners){
                 
@@ -292,13 +292,13 @@ function AddOwnersToDistributionGroup($DistributionGroup, $Owners){
             }
         } else {
             
-            Log "ERRO: Não houveram nenhum caso de sucesso na inclusão de proprietários na lista de distribuição"
+            Log "ERRO: NÃ£o houveram nenhum caso de sucesso na inclusÃ£o de proprietÃ¡rios na lista de distribuiÃ§Ã£o"
             exit 1
         }
     }
 }
 
-# Função para adicionar Remetentes a uma lista de distribuição
+# FunÃ§Ã£o para adicionar Remetentes a uma lista de distribuiÃ§Ã£o
 function AddSendersToDistributionGroup($DistributionGroup, $Senders){
 
     # Criando Array de Falha e Sucesso para Senders
@@ -307,7 +307,7 @@ function AddSendersToDistributionGroup($DistributionGroup, $Senders){
     $AlreadyIsSenderList = [System.Collections.ArrayList]::new()
 
     if(($Senders[0] -eq "N") -or ($Senders[1] -eq "A")){
-		Log "Não foi solicitado a inserção de nenhum remetente a Lista de Distribuição"
+		Log "NÃ£o foi solicitado a inserÃ§Ã£o de nenhum remetente a Lista de DistribuiÃ§Ã£o"
 	} else {
         
         # Percorrendo os Remetentes
@@ -317,14 +317,14 @@ function AddSendersToDistributionGroup($DistributionGroup, $Senders){
 
             if($SenderMailBox){
 
-                # Verificando se o usuário já é um Remetente
+                # Verificando se o usuÃ¡rio jÃ¡ Ã© um Remetente
                 if($DistributionGroup.AcceptMessagesOnlyFrom.Contains($SenderMailBox.Alias)){
                     
                     $AlreadyIsSenderList.Add($SenderMailBox.Alias) | Out-Null
 
                 } else {
                     
-                    # Adicionando o usuário a lista de Remetentes
+                    # Adicionando o usuÃ¡rio a lista de Remetentes
                     $DistributionGroup.AcceptMessagesOnlyFrom.Add($SenderMailBox.Alias)
 
                     $SuccessListSenders.Add($SenderMailBox.Alias) | Out-Null
@@ -339,19 +339,19 @@ function AddSendersToDistributionGroup($DistributionGroup, $Senders){
         }
 
 
-        # Verificando se houveram usuários que não foram inseridos pois já eram Remetentes
+        # Verificando se houveram usuÃ¡rios que nÃ£o foram inseridos pois jÃ¡ eram Remetentes
         if($AlreadyIsSenderList.Length -gt 0){
         
-            Log "Atenção: os seguintes usuários não foram adicionados a lista de remetentes pois já eram remetentes"
+            Log "AtenÃ§Ã£o: os seguintes usuÃ¡rios nÃ£o foram adicionados a lista de remetentes pois jÃ¡ eram remetentes"
 
             foreach($User in $AlreadyIsSenderList){
                 Log "-$User"
             }
         }
-        # Verificando se houveram usuários que não foram inseridos pois não foram localizados no Exchange
+        # Verificando se houveram usuÃ¡rios que nÃ£o foram inseridos pois nÃ£o foram localizados no Exchange
         if($FailedListSenders.Length -gt 0){
         
-            Log "Atenção: os seguintes usuários não foram adicionados a lista de distribuição poisn não foram localizados no Exchange"
+            Log "AtenÃ§Ã£o: os seguintes usuÃ¡rios nÃ£o foram adicionados a lista de distribuiÃ§Ã£o poisn nÃ£o foram localizados no Exchange"
 
             foreach($User in $FailedListSenders.Length -gt 0){
 
@@ -359,10 +359,10 @@ function AddSendersToDistributionGroup($DistributionGroup, $Senders){
             }
         }
 
-        # Verificando se os usuários foram inseridos e encerrando a inserção
+        # Verificando se os usuÃ¡rios foram inseridos e encerrando a inserÃ§Ã£o
         if ($SuccessListSenders.Length -gt 0){
         
-            Log "Sucesso: os seguintes usuários foram inseridos como Remetentes da Lista de distribuição"
+            Log "Sucesso: os seguintes usuÃ¡rios foram inseridos como Remetentes da Lista de distribuiÃ§Ã£o"
 
             foreach($User in $SuccessListSenders){
 
@@ -370,7 +370,7 @@ function AddSendersToDistributionGroup($DistributionGroup, $Senders){
             }
         } else {
         
-            Log "ERRO: Não houve nenhum caso de sucesso na inserção de remetentes na Lista de distribuição"
+            Log "ERRO: NÃ£o houve nenhum caso de sucesso na inserÃ§Ã£o de remetentes na Lista de distribuiÃ§Ã£o"
             exit 1
         }
     }
@@ -380,7 +380,7 @@ function AddSendersToDistributionGroup($DistributionGroup, $Senders){
 
 }
 
-# Função para criar uma lista de distribuição
+# FunÃ§Ã£o para criar uma lista de distribuiÃ§Ã£o
 function CreateDistributionGroup($Members, $Name, $Owners, $DepartRestriction, $JoinRestriction, $Senders) {
 
         
@@ -395,62 +395,62 @@ function CreateDistributionGroup($Members, $Name, $Owners, $DepartRestriction, $
             try{
                 New-DistributionGroup -Name $Name -Alias $AliasMail -PrimarySmtpAddress $MailAddress -ErrorAction Stop | Out-Null
             } catch {
-                Write-output "Erro na Criação do Grupo $Name"
+                Write-output "Erro na CriaÃ§Ã£o do Grupo $Name"
             }
 
             Start-Sleep 20
 
-            # Resgatando a lista recém criada
+            # Resgatando a lista recÃ©m criada
             $DistributionGroup = Get-DistributionGroup -Identity $AliasMail
 			
 			if($null -eq $DistributionGroup){
-				Log "Ocorreu um erro ao buscar a Lista de Distribuição recém criada."
+				Log "Ocorreu um erro ao buscar a Lista de DistribuiÃ§Ã£o recÃ©m criada."
 				exit 1	
 			}
 
-            # Chamando a função de Adicionar Membros
+            # Chamando a funÃ§Ã£o de Adicionar Membros
             AddMembersToNewDistributionGroup -DistributionGroup $DistributionGroup -Members $Members
 
-            # Chamando a função de adicionar proprietários
+            # Chamando a funÃ§Ã£o de adicionar proprietÃ¡rios
             AddOwnersToDistributionGroup -DistributionGroup $DistributionGroup -Owners $Owners
 
-            # Removendo a conta de serviço da lista de Proprietários
+            # Removendo a conta de serviÃ§o da lista de ProprietÃ¡rios
             # Id conta DEV: 9311cc06-c0fc-45ea-ab17-350da97dab0e
             $DistributionGroup.ManagedBy.Remove("deb4c82c-00cf-43b9-9a58-669f36dca86b")
 
-            # Definindo os proprietários
+            # Definindo os proprietÃ¡rios
             Set-DistributionGroup -Identity $DistributionGroup.Alias -ManagedBy $DistributionGroup.ManagedBy | Out-Null
 
-            # Chamando a função para adicionar os remetentes
+            # Chamando a funÃ§Ã£o para adicionar os remetentes
             AddSendersToDistributionGroup -DistributionGroup $DistributionGroup -Senders $Senders
                    
-            # Definindo restrições de entrada e saída
+            # Definindo restriÃ§Ãµes de entrada e saÃ­da
 			Set-DistributionGroup -Identity $DistributionGroup.Alias -MemberDepartRestriction $DepartRestriction -MemberJoinRestriction $JoinRestriction | Out-Null
             
             $GroupName = $DistributionGroup.DisplayName
                
-            Write-Output "Sucesso na Criação do grupo $GroupName"
+            Write-Output "Sucesso na CriaÃ§Ã£o do grupo $GroupName"
         
 }
 
 
-# Função para remover uma lista de distribuição
+# FunÃ§Ã£o para remover uma lista de distribuiÃ§Ã£o
 function RemoveDistributionGroup($DistributionGroup) {
     
     try {
 
-        #Remove o grupo de distribuição
+        #Remove o grupo de distribuiÃ§Ã£o
         Remove-DistributionGroup -Identity $DistributionGroup.alias -Confirm:$false
 
-        Write-Output "Sucesso na remoção da Lista de Distribuição " $DistributionGroup.DisplayName
+        Write-Output "Sucesso na remoÃ§Ã£o da Lista de DistribuiÃ§Ã£o " $DistributionGroup.DisplayName
 
     } catch {
 
-        Write-Output "Grupo " + $DistributionGroup.DisplayName + " não localizado"
+        Write-Output "Grupo " + $DistributionGroup.DisplayName + " nÃ£o localizado"
     }
 }
 
-# Função para remover membros de um grupo de lista de distribuição
+# FunÃ§Ã£o para remover membros de um grupo de lista de distribuiÃ§Ã£o
 function RemoveMembersFromDistributionGroup($DistributionGroup, $Members, $Owners, $Senders) {
     
     # Capturando os membros do grupo
@@ -464,7 +464,7 @@ function RemoveMembersFromDistributionGroup($DistributionGroup, $Members, $Owner
 
         if($MemberMailBox){
             
-            #Validando se o membro está no grupo
+            #Validando se o membro estÃ¡ no grupo
             if($DistributionGroupMembers.Name.Contains($MemberMailBox.alias)){
 
                 #Remover o membro
@@ -474,12 +474,12 @@ function RemoveMembersFromDistributionGroup($DistributionGroup, $Members, $Owner
                 
                 $GroupName = $DistributionGroup.DisplayName
 
-                Write-Output "ERRO: Chave $Member não localizada no grupo $GroupName"
+                Write-Output "ERRO: Chave $Member nÃ£o localizada no grupo $GroupName"
             }
 
         } else{
             
-             Write-Output "ERRO ao deletar MEMBRO: Chave $Member não localizada"
+             Write-Output "ERRO ao deletar MEMBRO: Chave $Member nÃ£o localizada"
         
         } 
     }
@@ -494,27 +494,27 @@ function RemoveMembersFromDistributionGroup($DistributionGroup, $Members, $Owner
 
         if($OwnerMailBox){
         
-            # Verificando se o usuário é um proprietário
+            # Verificando se o usuÃ¡rio Ã© um proprietÃ¡rio
             if($DistributionGroup.ManagedBy.Contains($OwnerMailBox.alias)){
                 
-                # Removendo o usuário da lista de proprietários
+                # Removendo o usuÃ¡rio da lista de proprietÃ¡rios
                 $DistributionGroup.ManagedBy.Remove($OwnerMailBox.alias)
             } else {
             
-                Write-Output "Erro: Usuário $Owner não localizado na lista de proprietários"
+                Write-Output "Erro: UsuÃ¡rio $Owner nÃ£o localizado na lista de proprietÃ¡rios"
             }
         } else {
             
-            Write-Output "ERRO ao deletar OWNER: Chave $Owner não localizado"
+            Write-Output "ERRO ao deletar OWNER: Chave $Owner nÃ£o localizado"
             
         }
     }
 
-    # Definindo os Proprietários
+    # Definindo os ProprietÃ¡rios
     Set-DistributionGroup -Identity $DistributionGroup.alias -ManagedBy $DistributionGroup.ManagedBy | Out-Null
     
 	if(($Senders[0] -eq "N") -or ($Senders[1] -eq "A")){
-		Log "Não foi solicitado a remoção de nenhum remetente a Lista de Distribuição"
+		Log "NÃ£o foi solicitado a remoÃ§Ã£o de nenhum remetente a Lista de DistribuiÃ§Ã£o"
 	} else {
 		
 		# Validando remetentes
@@ -525,7 +525,7 @@ function RemoveMembersFromDistributionGroup($DistributionGroup, $Members, $Owner
 
 			if($ValidSender){
 
-				# Validando se o Sender é um remetente
+				# Validando se o Sender Ã© um remetente
 				if($DistributionGroup.AcceptMessagesOnlyFrom.Contains($ValidSender.Alias)){
                 
 					#Adicionando a lista de remetentes
@@ -533,11 +533,11 @@ function RemoveMembersFromDistributionGroup($DistributionGroup, $Members, $Owner
 
 				} else {
             
-					Log "ERRO ao remover REMETENTE: $Sender não localizado na Lista "
+					Log "ERRO ao remover REMETENTE: $Sender nÃ£o localizado na Lista "
 				}
 			} else{
             
-				Log "Remetente $Sender não localizado"
+				Log "Remetente $Sender nÃ£o localizado"
 
 			}    
 		}
@@ -548,7 +548,7 @@ function RemoveMembersFromDistributionGroup($DistributionGroup, $Members, $Owner
     Set-DistributionGroup -Identity $DistributionGroup.Alias -AcceptMessagesOnlyFrom $DistributionGroup.AcceptMessagesOnlyFrom
 
     # Mensagem de Sucesso
-    Log "Sucesso na Remoção de Membros, Proprietários e Remetentes" 
+    Log "Sucesso na RemoÃ§Ã£o de Membros, ProprietÃ¡rios e Remetentes" 
 
 }
 
@@ -572,7 +572,7 @@ function ValidName($Name, $Name2){
         
         } 
     } else {
-                Write-Output "ERRO: Nenhum Nome Disponível para criação da lista"
+                Write-Output "ERRO: Nenhum Nome DisponÃ­vel para criaÃ§Ã£o da lista"
                 Exit
     }
 }
@@ -611,7 +611,7 @@ function ValidDepartPermission($Saida){
 
 
 
-if($acao -eq "CRIAR LISTA COM ATÉ 20 MEMBROS"){
+if($acao -eq "CRIAR LISTA COM ATÃ‰ 20 MEMBROS"){
       
       #Validar o Nome
       $DistributionName = ValidName -Name $Name -Name2 $Name2 -Name3 $Name3
@@ -624,14 +624,14 @@ if($acao -eq "CRIAR LISTA COM ATÉ 20 MEMBROS"){
 
       CreateDistributionGroup -Members $ArrayMembros -Owners $ArrayOwners -Name $DistributionName -DepartRestriction $DepartRestriction -JoinRestriction $JoinRestriction -Senders $ArraySenders
 
-} elseif($acao -eq "CRIAR LISTA COM MEMBROS DE UMA GERÊNCIA") {
+} elseif($acao -eq "CRIAR LISTA COM MEMBROS DE UMA GERÃŠNCIA") {
 
-    Log "**Atenção**: Esse script não atende demandas de criação de lista utilizando membros de uma gerência, favor realizar o tratamento manual dessa demanda."
+    Log "**AtenÃ§Ã£o**: Esse script nÃ£o atende demandas de criaÃ§Ã£o de lista utilizando membros de uma gerÃªncia, favor realizar o tratamento manual dessa demanda."
     exit 1
 
 } elseif($acao -eq "CRIAR LISTA COM MAIS DE 20 MEMBROS"){
     
-    Log "**Atenção**: Esse script não atende demandas de criação de lista utilizando com mais de 20 membros, favor realizar o tratamento manual dessa demanda."
+    Log "**AtenÃ§Ã£o**: Esse script nÃ£o atende demandas de criaÃ§Ã£o de lista utilizando com mais de 20 membros, favor realizar o tratamento manual dessa demanda."
     exit 1
 }
 
@@ -641,38 +641,38 @@ $DistributionGroup = Get-DistributionGroup -Identity $Email -ErrorAction Silentl
 
 if($DistributionGroup){
 
-    # Checando se o solicitante é proprietário da Lista de Distribuição
+    # Checando se o solicitante Ã© proprietÃ¡rio da Lista de DistribuiÃ§Ã£o
 
     if($DistributionGroup.ManagedBy -notcontains $AffectedUser){
 
-        Log "*ERRO*: Usuário solicitante não é proprietário da Lista de distribuição $($DistributionGroup.DisplayName)"
+        Log "*ERRO*: UsuÃ¡rio solicitante nÃ£o Ã© proprietÃ¡rio da Lista de distribuiÃ§Ã£o $($DistributionGroup.DisplayName)"
             exit 1
     }
 
 
 
-    # Realizando Atendimento para Inclusão de Chaves
+    # Realizando Atendimento para InclusÃ£o de Chaves
     if($acao -eq "INCLUIR CHAVES"){
 
-        # Checando se chegaram Membros, Proprietários e Remetentes para incluir na Lista de Distribuição
+        # Checando se chegaram Membros, ProprietÃ¡rios e Remetentes para incluir na Lista de DistribuiÃ§Ã£o
 
          if($ArrayMembros[0] -ne "N"){
 
-            # Chamando função de inclusão de Membros
+            # Chamando funÃ§Ã£o de inclusÃ£o de Membros
             AddMembersToDistributionGroup -DistributionGroup $DistributionGroup -Members $ArrayMembros
                 
          }
 
          if($ArrayOwners[0] -ne "N"){
 
-            # Chamando a função de inclusão de Proprietários
+            # Chamando a funÃ§Ã£o de inclusÃ£o de ProprietÃ¡rios
             AddOwnersToDistributionGroup -DistributionGroup $DistributionGroup -Owners $ArrayOwners
                 
          }
 
          if($ArraySenders[0] -ne "N"){
 
-            # Chamando a função de inclusão de Remetentes
+            # Chamando a funÃ§Ã£o de inclusÃ£o de Remetentes
             AddSendersToDistributionGroup -DistributionGroup $DistributionGroup -Senders $ArraySenders
                 
          }
@@ -682,23 +682,23 @@ if($DistributionGroup){
     # Realizando atendimento de Excluir Chaves
     if($acao -eq "EXCLUIR CHAVES"){
     
-        # Chamando Função de Exclusão de membros
+        # Chamando FunÃ§Ã£o de ExclusÃ£o de membros
         RemoveMembersFromDistributionGroup -DistributionGroup $DistributionGroup -Members $ArrayMembros -Owners $ArrayOwners -Senders $ArraySenders
     
     }
 
 
-    # Realizando atendimento de Excluir a Lista de Distribuição
+    # Realizando atendimento de Excluir a Lista de DistribuiÃ§Ã£o
     if($acao -eq "EXCLUIR A LISTA"){
 
-        # Chamando função de remoção do Grupo
+        # Chamando funÃ§Ã£o de remoÃ§Ã£o do Grupo
         RemoveDistributionGroup -DistributionGroup $DistributionGroup
     
     }
 
 } else {
 
-    Log "Erro: Lista de ditribuição $Email não localizada no exchange"
+    Log "Erro: Lista de ditribuiÃ§Ã£o $Email nÃ£o localizada no exchange"
     exit 1
 
 }

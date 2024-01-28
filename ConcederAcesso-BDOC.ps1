@@ -1,4 +1,4 @@
-Param (
+lParam (
     
     [Parameter( Mandatory=$true)] [String]$BDOC,
     [Parameter( Mandatory=$true)] [String]$Chaves
@@ -6,7 +6,7 @@ Param (
 )
 
 
-#Importando Módulos necessários
+#Importando MÃ³dulos necessÃ¡rios
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Import-Module PnP.PowerShell -RequiredVersion 1.12.0
 Import-Module ActiveDirectory
@@ -29,7 +29,7 @@ $SecurePassword = ConvertTo-SecureString -String $PlainPassword -AsPlainText -Fo
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $SecurePassword #>
 
 # Credenciais de PROD
-$username = "samsazu@petrobras.com.br"
+$username = "email"
 $msolKeyAuth = (3,4,2,3,56,34,254,222,1,1,2,23,42,54,33,233,1,34,2,7,6,5,35,43)
 $password = Get-Content "D:\Password\password.txt" -ErrorAction Stop | ConvertTo-SecureString -Key $msolKeyAuth -ErrorAction Stop
 $Credential = New-Object -typename System.Management.Automation.PSCredential -argumentlist $username,$password -ErrorAction Stop 
@@ -38,7 +38,7 @@ $Credential = New-Object -typename System.Management.Automation.PSCredential -ar
 #Definindo o caminho do log
 $LogFile = "D:\Util\BibliotecaDocumentos\Logs\" + (Get-Date).ToString('yyyyMMdd') + "_BDOC-Concessao.csv"
 
-# -------------------- Função de log  -------------------- #
+# -------------------- FunÃ§Ã£o de log  -------------------- #
 
 function Log([string]$Message, [bool]$Print){
     $Datetime = (Get-Date).ToString('dd/MM/yyyy HH:mm:ss')
@@ -105,7 +105,7 @@ try{
 
 
 
-# ------------------ Funções Principais ------------------ #
+# ------------------ FunÃ§Ãµes Principais ------------------ #
 function GiveAcces($BDOC, $Chaves){
     
     # Capturando o grupo de membros da BDOC
@@ -120,10 +120,10 @@ function GiveAcces($BDOC, $Chaves){
     # Percorrendo a lista de chaves a serem adicionadas na BDOC
     foreach($User in $Chaves){
         
-        # Capturando a mailbox do Usuário a ser adicionado na BDOC
+        # Capturando a mailbox do UsuÃ¡rio a ser adicionado na BDOC
         $ADUser = Get-ADUser -Filter "Name -eq '$User'"
 
-        # Verificando se o usuário foi localizado
+        # Verificando se o usuÃ¡rio foi localizado
         if($ADUser){
             
             try{
@@ -146,16 +146,16 @@ function GiveAcces($BDOC, $Chaves){
     # Verificando os casos de falha e Sucesso
     if($SuccessArray.Length -gt 0){
 
-        Log "SUCESSO: Os seguintes usuários foram adicionados a BDOC" -Print:$true
+        Log "SUCESSO: Os seguintes usuÃ¡rios foram adicionados a BDOC" -Print:$true
 
         foreach($User in $SuccessArray){
             Log " -$User" -Print:$true
         }
 
-        # Verificando se houveram falhas durante a execução
+        # Verificando se houveram falhas durante a execuÃ§Ã£o
         if($NotFoundArray.length -gt 0){
             
-            Log "Os seguintes usuários não foram adicionados por não serem localizados no Exchange:" -Print:$true
+            Log "Os seguintes usuÃ¡rios nÃ£o foram adicionados por nÃ£o serem localizados no Exchange:" -Print:$true
             foreach($User in $NotFoundArray){
                 Log " -$User" -Print:$true
             }
@@ -164,7 +164,7 @@ function GiveAcces($BDOC, $Chaves){
 
         if($FailedArray.Length -gt 0){
             
-            Log "Os seguintes usuários não foram adicionados por um erro interno na execução do Comando:" -Print:$true
+            Log "Os seguintes usuÃ¡rios nÃ£o foram adicionados por um erro interno na execuÃ§Ã£o do Comando:" -Print:$true
             foreach($User in $NotFoundArray){
                 Log " -$User" -Print:$true
             }
@@ -172,12 +172,12 @@ function GiveAcces($BDOC, $Chaves){
 
     } else {
         
-        # Caso não ocorra nenhum caso de sucesso
-        Log "ERRO: Não houve nenhum caso de sucesso na execução" -print:$true
+        # Caso nÃ£o ocorra nenhum caso de sucesso
+        Log "ERRO: NÃ£o houve nenhum caso de sucesso na execuÃ§Ã£o" -print:$true
 
         if($NotFoundArray.length -gt 0){
             
-            Log "Os seguintes usuários não foram adicionados por não serem localizados no Exchange:" -Print:$true
+            Log "Os seguintes usuÃ¡rios nÃ£o foram adicionados por nÃ£o serem localizados no Exchange:" -Print:$true
             foreach($User in $NotFoundArray){
                 Log " -$User" -Print:$true
             }
@@ -186,7 +186,7 @@ function GiveAcces($BDOC, $Chaves){
 
         if($FailedArray.Length -gt 0){
             
-            Log "Os seguintes usuários não foram adicionados por um erro interno na execução do Comando :" -Print:$true
+            Log "Os seguintes usuÃ¡rios nÃ£o foram adicionados por um erro interno na execuÃ§Ã£o do Comando :" -Print:$true
             foreach($User in $FailedArray){
                 Log " -$User" -Print:$true
             }
@@ -203,11 +203,11 @@ $ArrayChaves =  $Chaves.split(",")
 # Tornando a Sala "Unlock"
 Set-PnPSite -LockState Unlock
 
-# Realizando as alterações
+# Realizando as alteraÃ§Ãµes
 GiveAcces -BDOC $BDOC -Chaves $ArrayChaves
 
 # Tornando a Sala "ReadOnly"
 Set-PnPSite -LockState ReadOnly
 
-# Fechando a conexão com o SharePoint
+# Fechando a conexÃ£o com o SharePoint
 Disconnect-PnPOnline

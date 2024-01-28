@@ -1,4 +1,4 @@
-﻿$tenantname = "petrobras-vdi"
+﻿$tenantname = "-vdi"
 
 $spnApplicationId = '89d51029-4ceb-4aaf-90fd-815f463784ff' # Cloud Automation
 $spnPasswd = '=ot2.qtZ=56z3NJ=N2uvB8.C8Fn96MjU'
@@ -6,18 +6,18 @@ $spnPasswd = '=ot2.qtZ=56z3NJ=N2uvB8.C8Fn96MjU'
 $aadTenantId = '5b6f6241-9a57-4be4-8e50-1dfa72e79a57'
 $spnCredential = New-Object System.Management.Automation.PSCredential($spnApplicationId, (ConvertTo-SecureString $spnPasswd -AsPlainText -Force))
 
-$vdiPool = "VDI-POOL-001"
-$rdpPool = "APP-POOL-001"
+$vdiPool = "-POOL-001"
+$rdpPool = "-POOL-001"
 $resourceGroup = "proj-00016-wvd-rg"
 
-$adUser = 'sasmav'
-$adPasswordCifrado = 'Y29tQENlc3Mw'
+$adUser = ''
+$adPasswordCifrado = ''
 $adPassword = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($adPasswordCifrado))
 $adSecurePassword = ConvertTo-SecureString "$adPassword" -AsPlainText -Force
 $adCredential = New-Object -TypeName PSCredential -ArgumentList $adUser, $adSecurePassword
 
-$admUser = 'sasmazure'
-$admPasswordCifrado = 'YwBvAG0AQABDAGUAcwBzADAAMQAyADMANAA='
+$admUser = ''
+$admPasswordCifrado = '='
 $admPassword = [System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String($admPasswordCifrado))
 $admSecurePassword = ConvertTo-SecureString "$admPassword" -AsPlainText -Force
 $admCredential = New-Object -TypeName PSCredential -ArgumentList $admUser, $admSecurePassword

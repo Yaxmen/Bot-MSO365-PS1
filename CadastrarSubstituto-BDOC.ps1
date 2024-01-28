@@ -21,8 +21,8 @@ Import-Module ActiveDirectory
 #Definindo Constantes de credenciais
 
 # Credenciais de DEV
-<#$UserName = "SAN3MSOFFICE@petrobrasbrteste.petrobras.com.br"
-$PlainPassword = "Ror66406"
+<#$UserName = 
+$PlainPassword = ""
 $SecurePassword = ConvertTo-SecureString -String $PlainPassword -AsPlainText -Force
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $SecurePassword #>
 

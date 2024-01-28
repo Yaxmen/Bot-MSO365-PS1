@@ -1,7 +1,7 @@
-Param(
-    [Parameter(Mandatory=$true)] [string] $Acao,
-    [Parameter(Mandatory=$true)] [string] $SalaDeReuniao,
-    [Parameter(Mandatory=$true)] [string] $Chaves
+lParam(
+Â Â Â  [Parameter(Mandatory=$true)] [string] $Acao,
+Â Â Â  [Parameter(Mandatory=$true)] [string] $SalaDeReuniao,
+Â Â Â  [Parameter(Mandatory=$true)] [string] $Chaves
 )
 
 # Definindo credenciais de acesso a tenant
@@ -11,11 +11,11 @@ Param(
 #$Credentials = New-Object -typename System.Management.Automation.PSCredential -argumentlist $username,$password -ErrorAction Stop
 
 
-$username = "SAN3MSOFFICE@petrobrasbrteste.petrobras.com.br"
+$username = "email"
 $PlainPassword="Ror66406"
 $SecurePassword = $PlainPassword | ConvertTo-SecureString -AsPlainText -Force
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $UserName, $SecurePassword
- 
+Â 
 
 
 $SLEEP = 60
@@ -48,190 +48,190 @@ catch {
 
 function IncludeApprover($RoomMailBox, $Calendar, $Chaves){
 
-    # Capturando o Resource Delegate
-    $Resource = $Calendar.ResourceDelegates
+Â Â Â  # Capturando o Resource Delegate
+Â Â Â  $Resource = $Calendar.ResourceDelegates
 
-    # Capturando o Book in Policy
-    $BookInPolicy = $Calendar.BookInPolicy
+Â Â Â  # Capturando o Book in Policy
+Â Â Â  $BookInPolicy = $Calendar.BookInPolicy
 
-    # Verificando se a sala aceita aprovadores
-    if (($Calendar.AutomateProcessing -eq "AutoAccept") -and (-not($Calendar.AllBookInPolicy)) -and ($Calendar.AllRequestInPolicy)){
-    } else {
+Â Â Â  # Verificando se a sala aceita aprovadores
+Â Â Â  if (($Calendar.AutomateProcessing -eq "AutoAccept") -and (-not($Calendar.AllBookInPolicy)) -and ($Calendar.AllRequestInPolicy)){
+Â Â Â  } else {
 
-        try {
-            # Setando a sala para aceitar apovadores
-            Set-CalendarProcessing -Identity $RoomMailBox.Alias -AutomateProcessing AutoAccept -AllBookInPolicy $false -AllRequestInPolicy $true -ErrorAction Stop        
-        } catch {
-            Write-Output "*** ERRO: Não foi possível configurar a sala para aceitar aprovadores ***"
-        }
-    }
+Â Â Â Â Â Â Â  try {
+Â Â Â Â Â Â Â Â Â Â Â  # Setando a sala para aceitar apovadores
+Â Â Â Â Â Â Â Â Â Â Â  Set-CalendarProcessing -Identity $RoomMailBox.Alias -AutomateProcessing AutoAccept -AllBookInPolicy $false -AllRequestInPolicy $true -ErrorAction StopÂ Â Â Â Â Â Â Â 
+Â Â Â Â Â Â Â  } catch {
+Â Â Â Â Â Â Â Â Â Â Â  Write-Output "*** ERRO: NÃ£o foi possÃ­vel configurar a sala para aceitar aprovadores ***"
+Â Â Â Â Â Â Â  }
+Â Â Â  }
 
-    # Criando um array com as chaves
-    $ArrayChaves = $Chaves.Split(",")
+Â Â Â  # Criando um array com as chaves
+Â Â Â  $ArrayChaves = $Chaves.Split(",")
 
-    # Percorrendo todas as chaves para fazer a inclusão
-    foreach($Chave in $ArrayChaves){
+Â Â Â  # Percorrendo todas as chaves para fazer a inclusÃ£o
+Â Â Â  foreach($Chave in $ArrayChaves){
 
-    # Captura a mailbox da chave
-    try{ 
-        $MailUser = Get-MailBox -Identity $Chave -ErrorAction Stop
-    } catch {
-        Write-Host "*** Chave $Chave não localizada ***"
-        Continue
-    }
+Â Â Â  # Captura a mailbox da chave
+Â Â Â  try{Â 
+Â Â Â Â Â Â Â  $MailUser = Get-MailBox -Identity $Chave -ErrorAction Stop
+Â Â Â  } catch {
+Â Â Â Â Â Â Â  Write-Host "*** Chave $Chave nÃ£o localizada ***"
+Â Â Â Â Â Â Â  Continue
+Â Â Â  }
 
-    # Capturando o LegacyExchange e o Alias do usuario
-    $LegacyExchange = $MailUser.LegacyExchangeDN
-    $AliasUser = $MailUser.Alias
+Â Â Â  # Capturando o LegacyExchange e o Alias do usuario
+Â Â Â  $LegacyExchange = $MailUser.LegacyExchangeDN
+Â Â Â  $AliasUser = $MailUser.Alias
 
-    # Verifica se a Chave ja esta cadastrada como Aprovador
-    if(($Resource.Contains($MailUser.DisplayName)) -or ($BookInPolicy.Contains($LegacyExchange))) {
-        Write-Output "Chave já esta cadastrada como aprovador: $AliasUser"
-    } else {
+Â Â Â  # Verifica se a Chave ja esta cadastrada como Aprovador
+Â Â Â  if(($Resource.Contains($MailUser.DisplayName)) -or ($BookInPolicy.Contains($LegacyExchange))) {
+Â Â Â Â Â Â Â  Write-Output "Chave jÃ¡ esta cadastrada como aprovador: $AliasUser"
+Â Â Â  } else {
 
-        # Incluindo como aprovador da Sala pelo Alias
-        $Resource.Add($AliasUser) | Out-Null
+Â Â Â Â Â Â Â  # Incluindo como aprovador da Sala pelo Alias
+Â Â Â Â Â Â Â  $Resource.Add($AliasUser) | Out-Null
 
-        # Incluindo como Aprovador da Sala pelo LegacyExchange
-        $BookInPolicy.Add($LegacyExchange) | Out-Null
+Â Â Â Â Â Â Â  # Incluindo como Aprovador da Sala pelo LegacyExchange
+Â Â Â Â Â Â Â  $BookInPolicy.Add($LegacyExchange) | Out-Null
 
-        # Definindo a Folder do calendário 
-        $Folder = $RoomMailBox.DisplayName + ":\Calendar"
+Â Â Â Â Â Â Â  # Definindo a Folder do calendÃ¡rioÂ 
+Â Â Â Â Â Â Â  $Folder = $RoomMailBox.DisplayName + ":\Calendar"
 
-        # Setando cada usuário como aprovador
+Â Â Â Â Â Â Â  # Setando cada usuÃ¡rio como aprovador
         
         Add-MailboxFolderPermission -Identity $Folder -User $AliasUser -AccessRights Editor -SharingPermissionFlags Delegate | Out-Null
         
         }
-    }
+Â Â Â  }
 
-    try {    
-        
-        # Definindo lista de aprovadores
-        Set-Mailbox -Identity $RoomMailBox.Alias -GrantSendOnBehalfTo $Resource -ErrorAction Stop | Out-Null
+Â Â Â  try {Â Â Â Â 
+Â Â Â Â Â    
+Â Â Â Â Â Â Â  # Definindo lista de aprovadores
+Â Â Â Â Â Â Â  Set-Mailbox -Identity $RoomMailBox.Alias -GrantSendOnBehalfTo $Resource -ErrorAction Stop | Out-Null
 
-        # Defininfo Lista de pré-Aprovadores
-        Set-CalendarProcessing -Identity $RoomMailBox.Alias -BookInPolicy $BookInPolicy -ErrorAction Stop | Out-Null
+Â Â Â Â Â Â Â  # Defininfo Lista de prÃ©-Aprovadores
+Â Â Â Â Â Â Â  Set-CalendarProcessing -Identity $RoomMailBox.Alias -BookInPolicy $BookInPolicy -ErrorAction Stop | Out-Null
         
         Write-host "*** SUCESSO: Lista de aprovadores atualizada"
-    }
-    catch {
+Â Â Â  }
+Â Â Â  catch {
 
-        Write-Output "*** ERRO: Erro ao redefinir a lista de aprovadores"
-    }
+Â Â Â Â Â Â Â  Write-Output "*** ERRO: Erro ao redefinir a lista de aprovadores"
+Â Â Â  }
 }
 
 
 function ExcludeApprover($RoomMailBox, $Calendar, $Chaves){
 
-    # Capturando o Resource Delegate
-    $Resource = $Calendar.ResourceDelegates
+Â Â Â  # Capturando o Resource Delegate
+Â Â Â  $Resource = $Calendar.ResourceDelegates
 
-    # Capturando o Book in Policy
-    $BookInPolicy = $Calendar.BookInPolicy
+Â Â Â  # Capturando o Book in Policy
+Â Â Â  $BookInPolicy = $Calendar.BookInPolicy
 
-    # Criando um Array com as Chaves
-    $ArrayChaves = $Chaves.Split(",")
+Â Â Â  # Criando um Array com as Chaves
+Â Â Â  $ArrayChaves = $Chaves.Split(",")
 
-    # Percorrendo o array de chaves para remover o acesso de aprovador
-    foreach($Chave in $ArrayChaves){
+Â Â Â  # Percorrendo o array de chaves para remover o acesso de aprovador
+Â Â Â  foreach($Chave in $ArrayChaves){
 
-        # Capturando a mailbox da chave
-        try{
-            $MailUser = Get-Mailbox -Identity $Chave -ErrorAction Stop
-        } catch{
-            Write-Output "*** Chave $chave não localizada ***"
-        }
+Â Â Â Â Â Â Â  # Capturando a mailbox da chave
+Â Â Â Â Â Â Â  try{
+Â Â Â Â Â Â Â Â Â Â Â  $MailUser = Get-Mailbox -Identity $Chave -ErrorAction Stop
+Â Â Â Â Â Â Â  } catch{
+Â Â Â Â Â Â Â Â Â Â Â  Write-Output "*** Chave $chave nÃ£o localizada ***"
+Â Â Â Â Â Â Â  }
 
-        # Verificando se o Usuário está cadastrado como aprovador
-        if(-not ($Resource.Contains($MailUser.Name)) -and -not ($BookInPolicy.Contains($MailUser.LegacyExchangeDN))){
+Â Â Â Â Â Â Â  # Verificando se o UsuÃ¡rio estÃ¡ cadastrado como aprovador
+Â Â Â Â Â Â Â  if(-not ($Resource.Contains($MailUser.Name)) -and -not ($BookInPolicy.Contains($MailUser.LegacyExchangeDN))){
 
-            Write-Host "ATENÇÃO: Chave não localizada como aprovador da sala - $Chave"
+Â Â Â Â Â Â Â Â Â Â Â  Write-Host "ATENÃ‡ÃƒO: Chave nÃ£o localizada como aprovador da sala - $Chave"
 
-        } else {
+Â Â Â Â Â Â Â  } else {
 
-            # Remove a chave da lista de aprovadores
-            $Resource.Remove($MailUser.Name)
+Â Â Â Â Â Â Â Â Â Â Â  # Remove a chave da lista de aprovadores
+Â Â Â Â Â Â Â Â Â Â Â  $Resource.Remove($MailUser.Name)
 
-            # Remove a chave da lista do LegacyExchange
-            $BookInPolicy.Remove($MailUser.LegacyExchangeDN)
+Â Â Â Â Â Â Â Â Â Â Â  # Remove a chave da lista do LegacyExchange
+Â Â Â Â Â Â Â Â Â Â Â  $BookInPolicy.Remove($MailUser.LegacyExchangeDN)
 
-        }
-    }
+Â Â Â Â Â Â Â  }
+Â Â Â  }
 
     try{
-        
+Â Â Â      
         
-        $folder = $RoomMailBox.DisplayName + ":\Calendar"
+Â Â Â      $folder = $RoomMailBox.DisplayName + ":\Calendar"
         
-        # Redefinindo a lista de aprovadores da sala de reunião
-        Set-Mailbox -Identity $RoomMailBox.Alias -GrantSendOnBehalfTo $Resource -ErrorAction Stop | Out-Null
+        # Redefinindo a lista de aprovadores da sala de reuniÃ£o
+Â Â Â      Set-Mailbox -Identity $RoomMailBox.Alias -GrantSendOnBehalfTo $Resource -ErrorAction Stop | Out-Null
 
-        # Redefinindo lista de pré-aprovadores da sala
-        Set-CalendarProcessing -Identity $RoomMailBox.Alias -BookInPolicy $BookInPolicy -ErrorAction Stop | Out-Null
+Â Â Â      # Redefinindo lista de prÃ©-aprovadores da sala
+Â Â Â      Set-CalendarProcessing -Identity $RoomMailBox.Alias -BookInPolicy $BookInPolicy -ErrorAction Stop | Out-Null
 
-        # Removendo as permissões de calendário
+        # Removendo as permissÃµes de calendÃ¡rio
         Remove-MailboxFolderpermission -Identity $folder -User $MailUser.Alias -Force
 
         Write-Host "*** SUCESSO: Chave removida com sucesso ***"
     
     } catch {
     
-        Write-host "*** ERRO: Falha na remoção das Chaves ***"
+        Write-host "*** ERRO: Falha na remoÃ§Ã£o das Chaves ***"
     }
 
-    
+Â Â Â  
 
-    # Redefinindo as permissões de calendário
-    try{
- 
-       Set-MailboxFolderPermission -Identity $folder -User Default -AccessRights AvailabilityOnly -ErrorAction Stop | Out-Null
+Â Â Â  # Redefinindo as permissÃµes de calendÃ¡rio
+Â Â Â  try{
+Â 
+Â Â Â Â Â Â  Set-MailboxFolderPermission -Identity $folder -User Default -AccessRights AvailabilityOnly -ErrorAction Stop | Out-Null
 
-       Write-Host "*** SUCESSO: Calendário atualizado ***"
+       Write-Host "*** SUCESSO: CalendÃ¡rio atualizado ***"
 
-    } catch {
-       Write-Host "*** ERRO: erro ao atualizar o calendário ***"
-    }
+Â Â Â  } catch {
+Â Â Â Â    Write-Host "*** ERRO: erro ao atualizar o calendÃ¡rio ***"
+Â Â Â  }
 }
 
 
-# Capturando a Mailbox da Sala de Reunião
+# Capturando a Mailbox da Sala de ReuniÃ£o
 $RoomMailBox = Get-Mailbox -Identity $SalaDeReuniao -ErrorAction SilentlyContinue
 
 # Conferindo se a MailBox existe
 if($null -eq $RoomMailBox){
 
-    Write-Output "*** ERRO $SalaDeReunião não localizada"
+Â Â Â  Write-Output "*** ERRO $SalaDeReuniÃ£o nÃ£o localizada"
 } else {
 
-    # Conferindo se a Sala de Reunião é privativa
-    if($RoomMailBox.DisplayName -match "Privativa"){
+Â Â Â  # Conferindo se a Sala de ReuniÃ£o Ã© privativa
+Â Â Â  if($RoomMailBox.DisplayName -match "Privativa"){
 
-        try {
+Â Â Â Â Â Â Â  try {
 
-            # Resgatando o calendário
-            $Calendar = Get-CalendarProcessing -Identity $RoomMailBox.Alias -ErrorAction Stop
+Â Â Â Â Â Â Â Â Â Â Â  # Resgatando o calendÃ¡rio
+Â Â Â Â Â Â Â Â Â Â Â  $Calendar = Get-CalendarProcessing -Identity $RoomMailBox.Alias -ErrorAction Stop
 
-        }
-        catch {
-            Write-Output "*** ERRO ao capturar as informações do Calendário ***"
-        }
+Â Â Â Â Â Â Â  }
+Â Â Â Â Â Â Â  catch {
+Â Â Â Â Â Â Â Â Â Â Â  Write-Output "*** ERRO ao capturar as informaÃ§Ãµes do CalendÃ¡rio ***"
+Â Â Â Â Â Â Â  }
 
-        # Se a ação for Incluir
-        if($Acao -eq "Incluir"){
+Â Â Â Â Â Â Â  # Se a aÃ§Ã£o for Incluir
+Â Â Â Â Â Â Â  if($Acao -eq "Incluir"){
 
-            IncludeApprover -RoomMailBox $RoomMailBox -Calendar $Calendar -Chaves $Chaves
+Â Â Â Â Â Â Â Â Â Â Â  IncludeApprover -RoomMailBox $RoomMailBox -Calendar $Calendar -Chaves $Chaves
 
-        }
+Â Â Â Â Â Â Â  }
 
-        # Se a ação for Excluir
-        if($Acao -eq "Excluir") {
+Â Â Â Â Â Â Â  # Se a aÃ§Ã£o for Excluir
+Â Â Â Â Â Â Â  if($Acao -eq "Excluir") {
             
             ExcludeApprover -RoomMailBox $RoomMailBox -Calendar $Calendar -Chaves $Chaves
 
-        }
+Â Â Â Â Â Â Â  }
 
-    } else{
-        Write-Output "*** ERRO $SalaDeReunião não classificada como privativa***"
-    }
+Â Â Â  } else{
+Â Â Â Â Â Â Â  Write-Output "*** ERRO $SalaDeReuniÃ£o nÃ£o classificada como privativa***"
+Â Â Â  }
 }

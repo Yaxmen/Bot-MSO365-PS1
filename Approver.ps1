@@ -12,7 +12,7 @@ lParam(
 
 
 $username = "email"
-$PlainPassword="Ror66406"
+$PlainPassword="senha"
 $SecurePassword = $PlainPassword | ConvertTo-SecureString -AsPlainText -Force
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $UserName, $SecurePassword
  

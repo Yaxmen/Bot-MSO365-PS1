@@ -11,8 +11,8 @@ $password = Get-Content "D:\Password\password.txt" -ErrorAction Stop | ConvertTo
 $Credentials = New-Object -typename System.Management.Automation.PSCredential -argumentlist $username,$password -ErrorAction Stop
 
 
-#$username = "SAN3MSOFFICE@petrobrasbrteste.petrobras.com.br"
-#$PlainPassword="Ror66406"
+#$username = "email"
+#$PlainPassword="senha"
 #$SecurePassword = $PlainPassword | ConvertTo-SecureString -AsPlainText -Force
 #s$Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $UserName, $SecurePassword
  

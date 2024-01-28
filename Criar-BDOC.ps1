@@ -1,4 +1,4 @@
-
+i
 
 param (
     [Parameter(Mandatory=$true)] [string]$Gerencia
@@ -21,15 +21,15 @@ $centralAdminUrl = "https://petrobrasbrteste-admin.sharepoint.com"
 
 
 # Definindo as credenciais de acesso 
-$AdminEmail = "SAN3MSOFFICE@petrobrasbrteste.petrobras.com.br"
+$AdminEmail = "email"
 $PlainPassword = "Ror66406"
 $SecurePassword = ConvertTo-SecureString -String $PlainPassword -AsPlainText -Force
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $adminEmail, $SecurePassword
 
 
-# ----------------------- Inicio das FunÁıes Auxiliares -------------------- #
+# ----------------------- Inicio das Fun√ß√µes Auxiliares -------------------- #
 
-#FunÁ„o de Log
+#Fun√ß√£o de Log
 function Log([string]$Message, [bool]$Print){
     $Datetime = (Get-Date).ToString('dd/MM/yyyy HH:mm:ss')
 
@@ -48,7 +48,7 @@ function Log([string]$Message, [bool]$Print){
     Add-Content -Path $LogFile -Value "$Datetime;$Message"
 }
 
-# ------------------------ Fim das FunÁıes Auxiliares ---------------------- #
+# ------------------------ Fim das Fun√ß√µes Auxiliares ---------------------- #
 
  
 # ------------------------- Conectando ao SharePoint ----------------------- #
@@ -73,11 +73,11 @@ try{
         }
     }
 #}
-# ------------------- Fim da Conex„o com o SharePoint -------------------- #
+# ------------------- Fim da Conex√£o com o SharePoint -------------------- #
 
  
 
-# ------------------- Inicio das FunÁıes de processamento ------------------ #
+# ------------------- Inicio das Fun√ß√µes de processamento ------------------ #
 
 Function CreateBDOC(){
 
@@ -87,7 +87,7 @@ Function CreateBDOC(){
     # Criando um array para armazenar os membros da gerencia
     $ArrayMembers = [System.Collections.ArrayList]::new()
 
-    # # Inicializando as vari√°veis do Gerente
+    # # Inicializando as vari√É¬°veis do Gerente
     $Manager = $null
     $ManagerRole = $null
 
@@ -133,18 +133,18 @@ Function CreateBDOC(){
     # Adicionando os usuarios como administradores da collection do site
     Add-PnPSiteCollectionAdmin -Owners $adminEmail
 
-    # Criando a p·gina
+    # Criando a p√°gina
     Add-PnPPage -Name $pageName -LayoutType Home -CommentsEnabled:$false -ErrorAction SilentlyContinue
 
     Start-Sleep 5
 
-    # Adicionando uma nova seÁ„o a p·gina
+    # Adicionando uma nova se√ß√£o a p√°gina
     Add-PnPPageSection -Page $pageName -SectionTemplate:OneColumn -Order 0 -ErrorAction SilentlyContinue
 
-    # Definindo a P·gina Inicial
+    # Definindo a P√°gina Inicial
     Set-PnPHomePage -RootFolderRelativeUrl ("Documentos Compartilhados/Forms/AllItems.aspx")
 
-    # Definindo o Logo da P·gina
+    # Definindo o Logo da P√°gina
     Set-PnPWeb -SiteLogoUrl "https://petrobrasbr.sharepoint.com/teams/bdoc/SiteAssets/__siteIcon__.png"
 
     Start-Sleep 5
@@ -164,22 +164,22 @@ Function CreateBDOC(){
     # Publicando a Home Page
     Set-PnPClientSidePage -Identity $PageName -Publish:$true -LayoutType:Home
 
-    # Configurando as permissıes de Propriet·rio
-    Add-PnPRoleDefinition -RoleName "Propriet·rios" -Include Open,ViewListItems,ApproveItems,OpenItems,ViewVersions,ViewPages,ManagePermissions,EnumeratePermissions,ApproveItems,BrowseDirectories,BrowseUserInfo | Out-Null
+    # Configurando as permiss√µes de Propriet√°rio
+    Add-PnPRoleDefinition -RoleName "Propriet√°rios" -Include Open,ViewListItems,ApproveItems,OpenItems,ViewVersions,ViewPages,ManagePermissions,EnumeratePermissions,ApproveItems,BrowseDirectories,BrowseUserInfo | Out-Null
 
-    # Associando os grupos as funÁıes no site
+    # Associando os grupos as fun√ß√µes no site
     $web = Get-PnPWeb
-    Set-PnPGroupPermissions -Identity $web.AssociatedOwnerGroup -RemoveRole 'Controle Total' -AddRole 'Propriet·rios'
+    Set-PnPGroupPermissions -Identity $web.AssociatedOwnerGroup -RemoveRole 'Controle Total' -AddRole 'Propriet√°rios'
     Set-PnPGroupPermissions -Identity $web.AssociatedMemberGroup -RemoveRole 'Editar' -AddRole 'Leitura'
 
     # Configurando permissoes da biblioteca de documentos
-    # Orientacao Microsoft: Manter o nÌvel de permissionamento de Proprietarios na lista
+    # Orientacao Microsoft: Manter o n√≠vel de permissionamento de Proprietarios na lista
     Set-PnPList -Identity "Documentos" -BreakRoleInheritance:$true -CopyRoleAssignments:$false | Out-Null
 
-    Set-PnPListPermission -Identity "Documentos" -Group $web.AssociatedOwnerGroup -AddRole "Propriet·rios"
-    Set-PnPListPermission -Identity "Documentos" -Group $web.AssociatedOwnerGroup -AddRole "ColaboraÁ„o"
+    Set-PnPListPermission -Identity "Documentos" -Group $web.AssociatedOwnerGroup -AddRole "Propriet√°rios"
+    Set-PnPListPermission -Identity "Documentos" -Group $web.AssociatedOwnerGroup -AddRole "Colabora√ß√£o"
     Set-PnPListPermission -Identity "Documentos" -Group $web.AssociatedOwnerGroup -AddRole "Design"
-    Set-PnPListPermission -Identity "Documentos" -Group $web.AssociatedMemberGroup -AddRole "ColaboraÁ„o"
+    Set-PnPListPermission -Identity "Documentos" -Group $web.AssociatedMemberGroup -AddRole "Colabora√ß√£o"
     Set-PnPListPermission -Identity "Documentos" -Group $web.AssociatedVisitorGroup -AddRole "Leitura"
 
     # Desabilitando comentarios nas paginas"
@@ -191,17 +191,17 @@ Function CreateBDOC(){
     Set-PnPList -Identity "Documentos" -EnableVersioning 1 -EnableMinorVersions 0 -MajorVersions 100 -MinorVersions 0 | Out-Null
 
     # Pastas criadas por padrao:
-    # GerÍncia: Proprietarios tem acesso de edicao, membros e visitantes nao possuem acesso
+    # Ger√™ncia: Proprietarios tem acesso de edicao, membros e visitantes nao possuem acesso
     # Conectando novamente ao Site
     Connect-PnPOnline ($tenantUrl + $siteUrl) -Credentials $Credential
 
-    # Adicionando pasta padr„o na biblioteca
-    Add-PnPFolder -Name "GerÍncia" -Folder "Documentos Compartilhados" | Out-Null
+    # Adicionando pasta padr√£o na biblioteca
+    Add-PnPFolder -Name "Ger√™ncia" -Folder "Documentos Compartilhados" | Out-Null
     $members = Get-PnPGroup -AssociatedMemberGroup
     $visitors = Get-PnPGroup -AssociatedVisitorGroup
-    $folder = Get-PnPFolder -Url "Documentos Compartilhados\GerÍncia"
+    $folder = Get-PnPFolder -Url "Documentos Compartilhados\Ger√™ncia"
     Set-PnPFolderPermission -List "Documentos" -Identity $folder -Group $visitors.Title -RemoveRole "Leitura"
-    Set-PnPFolderPermission -List "Documentos" -Identity $folder -Group $members.Title -RemoveRole "ColaboraÁ„o"
+    Set-PnPFolderPermission -List "Documentos" -Identity $folder -Group $members.Title -RemoveRole "Colabora√ß√£o"
 
 
     # Adicionando as colunas Tamanho e Confidencialidade
@@ -212,7 +212,7 @@ Function CreateBDOC(){
     }
     else
     {
-        Log "ERRO;View Todos os Documentos n„o encontrada"
+        Log "ERRO;View Todos os Documentos n√£o encontrada"
     }
 
     # Niveis de compartilhamento:
@@ -226,7 +226,7 @@ Function CreateBDOC(){
 
     if ($Manager) {    
 
-        Log "INFO;Propriet·rio;$tenantUrl$siteUrl;$Manager"
+        Log "INFO;Propriet√°rio;$tenantUrl$siteUrl;$Manager"
         $group = Get-PnPGroup -AssociatedOwnerGroup
         Add-PnPGroupMember -LoginName $Manager -Group $group.Id -Connection $spfxConn
     }
@@ -245,4 +245,4 @@ Function CreateBDOC(){
     }
 }
 
-# -------------------- Fim das FunÁıes de processamento -------------------- #
+# -------------------- Fim das Fun√ß√µes de processamento -------------------- #

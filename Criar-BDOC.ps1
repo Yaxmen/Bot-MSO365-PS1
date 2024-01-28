@@ -14,15 +14,15 @@ $Sleep = 5
 
 
 
-$tenantUrl = "https://petrobrasbrteste.sharepoint.com/teams/"
-$hubUrl = "https://petrobrasbrteste.sharepoint.com/teams/bdoc"
-$centralAdminUrl = "https://petrobrasbrteste-admin.sharepoint.com"
-#$centralAdminUrl = "https://petrobras-admin.sharepoint.com"
+#$tenantUrl = "https://.sharepoint.com/teams/"
+#$hubUrl = "https://.sharepoint.com/teams/bdoc"
+#$centralAdminUrl = "https://-admin.sharepoint.com"
+#$centralAdminUrl = "https://-admin.sharepoint.com"
 
 
 # Definindo as credenciais de acesso 
 $AdminEmail = "email"
-$PlainPassword = "Ror66406"
+$PlainPassword = "senha"
 $SecurePassword = ConvertTo-SecureString -String $PlainPassword -AsPlainText -Force
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $adminEmail, $SecurePassword
 

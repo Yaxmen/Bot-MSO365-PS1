@@ -27,7 +27,7 @@ $SecurePassword = ConvertTo-SecureString -String $PlainPassword -AsPlainText -Fo
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $SecurePassword #>
 
 # Credenciais de PROD
-$username = "samsazu@petrobras.com.br"
+$username = "email"
 $msolKeyAuth = (3,4,2,3,56,34,254,222,1,1,2,23,42,54,33,233,1,34,2,7,6,5,35,43)
 $password = Get-Content "D:\Password\password.txt" -ErrorAction Stop | ConvertTo-SecureString -Key $msolKeyAuth -ErrorAction Stop
 $Credential = New-Object -typename System.Management.Automation.PSCredential -argumentlist $username,$password -ErrorAction Stop 

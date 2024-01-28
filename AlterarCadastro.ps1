@@ -12,14 +12,14 @@ Param (
 )
 
  
-# Constantes de conexão com o Graph ambiente DEV
+# Constantes de conexÃ£o com o Graph ambiente DEV
 <#$ClientId = "60c5c5b3-84dd-4519-8ad7-58a34f8d39b4"
 $TenantId = "6af8f826-d4c2-47de-9f6d-c04908aa4e88"
 $Key = Get-Content "D:\Util\KeyFile\KeyFile.key"
 $Secret = Get-Content "D:\Util\KeyFile\Password.txt" | ConvertTo-SecureString -Key $Key
 $ClientSecretCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $ClientId, $Secret #>
 
-# Consantes de conexão com o Graph ambiente PROD
+# Consantes de conexÃ£o com o Graph ambiente PROD
 $ClientId = "b88e924b-530d-497c-8b16-b54456064e5f"
 $TenantId = "5b6f6241-9a57-4be4-8e50-1dfa72e79a57"
 $key = (1..16)
@@ -34,7 +34,7 @@ $logFile = "d:\Util\rooms\"+(Get-Date).ToString('yyyy')+"_xRoomlog.csv"
 # Definindo credenciais de acesso a tenant
 
 #Ambiente PROD
-$username = "samsazu@petrobras.com.br"
+$username = "e-mail"
 $msolKeyAuth = (3,4,2,3,56,34,254,222,1,1,2,23,42,54,33,233,1,34,2,7,6,5,35,43)
 $password = Get-Content "D:\Password\password.txt" -ErrorAction Stop | ConvertTo-SecureString -Key $msolKeyAuth -ErrorAction Stop
 $Credentials = New-Object -typename System.Management.Automation.PSCredential -argumentlist $username,$password -ErrorAction Stop
@@ -47,7 +47,7 @@ $Credentials = New-Object -typename System.Management.Automation.PSCredential -a
 
 
 
-#Função de Log
+#FunÃ§Ã£o de Log
 function Log([string]$message){
 
 
@@ -117,22 +117,22 @@ try{
 
  
 
-# --------------------- Funções Auxiliares ------------------------ #
+# --------------------- FunÃ§Ãµes Auxiliares ------------------------ #
 
 
 function IncludeApprover($RoomMailBox, $Chaves){
     
-    # Capturando o Calendário
+    # Capturando o CalendÃ¡rio
     $Calendar = Get-CalendarProcessing -Identity $RoomMailBox.Alias -ErrorAction Stop
 
-    # Capturando o Resource Delegate
-    $Resource = $Calendar.ResourceDelegates
+Â Â Â  # Capturando o Resource Delegate
+Â Â Â  $Resource = $Calendar.ResourceDelegates
 
-    # Capturando o Book in Policy
-    $BookInPolicy = $Calendar.BookInPolicy
+Â Â Â  # Capturando o Book in Policy
+Â Â Â  $BookInPolicy = $Calendar.BookInPolicy
 
-    # Criando um array com as chaves
-    $ArrayChaves = $Chaves.Split(",")
+Â Â Â  # Criando um array com as chaves
+Â Â Â  $ArrayChaves = $Chaves.Split(",")
     
     # Criando Arrays de Sucesso e Falha
 
@@ -140,78 +140,78 @@ function IncludeApprover($RoomMailBox, $Chaves){
 
     $FailedList = [System.Collections.ArrayList]::new()
 
-    # Percorrendo todas as chaves para fazer a inclusão
-    foreach($Chave in $ArrayChaves){
+Â Â Â  # Percorrendo todas as chaves para fazer a inclusÃ£o
+Â Â Â  foreach($Chave in $ArrayChaves){
 
-        # Captura a mailbox da chave
-        try{ 
-            $MailUser = Get-MailBox -Identity $Chave -ErrorAction Stop
-        } catch {
-            Log "*** ATENCAO: Chave $Chave não localizada ***"
-            Continue
-        }
+Â Â Â      # Captura a mailbox da chave
+Â Â Â      try{Â 
+Â Â Â Â Â Â Â      $MailUser = Get-MailBox -Identity $Chave -ErrorAction Stop
+Â Â Â      } catch {
+Â Â Â Â Â Â Â      Log "*** ATENCAO: Chave $Chave nÃ£o localizada ***"
+Â Â Â Â Â Â Â      Continue
+Â Â Â      }
 
-        # Capturando o LegacyExchange e o Alias do usuario
+Â Â Â      # Capturando o LegacyExchange e o Alias do usuario
 
-        $LegacyExchange = $MailUser.LegacyExchangeDN
+Â Â Â      $LegacyExchange = $MailUser.LegacyExchangeDN
 
-        $AliasUser = $MailUser.Alias
+Â Â Â      $AliasUser = $MailUser.Alias
 
-        # Verifica se a Chave ja esta cadastrada como Aprovador
-        if(($Resource.Contains($MailUser.DisplayName)) -or ($BookInPolicy.Contains($LegacyExchange))) {
+Â Â Â      # Verifica se a Chave ja esta cadastrada como Aprovador
+Â Â Â      if(($Resource.Contains($MailUser.DisplayName)) -or ($BookInPolicy.Contains($LegacyExchange))) {
             
             # Adicionando Chave a lista de Falhas
             $FailedList.Add($AliasUser) | Out-Null
 
-        } else {
+Â Â Â      } else {
 
-            # Incluindo como aprovador da Sala pelo Alias
-            $Resource.Add($AliasUser) | Out-Null
+Â Â Â Â Â Â Â      # Incluindo como aprovador da Sala pelo Alias
+Â Â Â Â Â Â Â      $Resource.Add($AliasUser) | Out-Null
 
-            # Incluindo como Aprovador da Sala pelo LegacyExchange
-            $BookInPolicy.Add($LegacyExchange) | Out-Null
+Â Â Â Â Â Â Â      # Incluindo como Aprovador da Sala pelo LegacyExchange
+Â Â Â Â Â Â Â      $BookInPolicy.Add($LegacyExchange) | Out-Null
 
-            # Definindo a Folder do calendário 
-            $Folder = $RoomMailBox.DisplayName + ":\Calendar"
+Â Â Â Â Â Â Â      # Definindo a Folder do calendÃ¡rioÂ 
+Â Â Â Â Â Â Â      $Folder = $RoomMailBox.DisplayName + ":\Calendar"
 
-            # Setando cada usuário como aprovador
+Â Â Â Â Â Â Â      # Setando cada usuÃ¡rio como aprovador
             Set-MailboxFolderPermission -Identity $Folder -User $AliasUser -AccessRights Editor -SharingPermissionFlags Delegate | Out-Null
 
             # Adicionando chave a lista de sucesso
             $SuccessList.Add($AliasUser) | Out-Null
         
         }
-    }
+Â Â Â  }
 
     if($SuccessList.Count -lt 1){
 
-        Log "*ATENCAO*: Todas as chaves informadas já estão cadastradas como aprovador ou nenhuma chave foi localizada no Outlook"
+        Log "*ATENCAO*: Todas as chaves informadas jÃ¡ estÃ£o cadastradas como aprovador ou nenhuma chave foi localizada no Outlook"
     
     }
 
 
-    try {    
-        
-        # Definindo lista de aprovadores
-        Set-Mailbox -Identity $RoomMailBox.Alias -GrantSendOnBehalfTo $Resource -ErrorAction Stop | Out-Null
+Â Â Â  try {Â Â Â Â 
+Â Â Â Â Â    
+Â Â Â Â Â Â Â  # Definindo lista de aprovadores
+Â Â Â Â Â Â Â  Set-Mailbox -Identity $RoomMailBox.Alias -GrantSendOnBehalfTo $Resource -ErrorAction Stop | Out-Null
 
-        # Defininfo Lista de pré-Aprovadores
-        Set-CalendarProcessing -Identity $RoomMailBox.Alias -BookInPolicy $BookInPolicy -ErrorAction Stop | Out-Null
+Â Â Â Â Â Â Â  # Defininfo Lista de prÃ©-Aprovadores
+Â Â Â Â Â Â Â  Set-CalendarProcessing -Identity $RoomMailBox.Alias -BookInPolicy $BookInPolicy -ErrorAction Stop | Out-Null
 
         if($FailedList.Count -gt 0){
 
             foreach($User in $FailedList) {
-                Log "*ATENCAO*: Chave já cadastrada como aprovador da Sala - $User"
+                Log "*ATENCAO*: Chave jÃ¡ cadastrada como aprovador da Sala - $User"
             }
         }
         
         Log "*** SUCESSO: Lista de aprovadores atualizada"
-    }
-    catch {
+Â Â Â  }
+Â Â Â  catch {
 
-        Log "*** ERRO: Erro ao redefinir a lista de aprovadores"
+Â Â Â Â Â Â Â  Log "*** ERRO: Erro ao redefinir a lista de aprovadores"
         Exit 1
-    }
+Â Â Â  }
 }
 
 function HandleCapacity($Capacity){
@@ -234,7 +234,7 @@ function HandleCapacity($Capacity){
 
 
 
-# ------------------- Funções de Processamento -------------------- #
+# ------------------- FunÃ§Ãµes de Processamento -------------------- #
 
 function HandleTypeRoom($Room, $Option){
 
@@ -242,15 +242,15 @@ function HandleTypeRoom($Room, $Option){
     try{
         $RoomCalendar = Get-CalendarProcessing -Identity $Room.Alias -ErrorAction Stop
     } catch{
-        Log "*Erro*: Ao capturar o Calendário"
+        Log "*Erro*: Ao capturar o CalendÃ¡rio"
     }
 
-    # Verificando o tipo de ação a ser tomado pela Função
+    # Verificando o tipo de aÃ§Ã£o a ser tomado pela FunÃ§Ã£o
 
-    # Ação de tornar a Sala Privativa
+    # AÃ§Ã£o de tornar a Sala Privativa
     if($Option -eq "CL_SALA_PRIVATIVA"){
 
-        # Verifica se a sala já é privativa
+        # Verifica se a sala jÃ¡ Ã© privativa
         if($RoomCalendar.AutomateProcessing -ne "AutoAccept"){
 
             #Setando a sala para privativa
@@ -268,7 +268,7 @@ function HandleTypeRoom($Room, $Option){
             }
 
         } else {
-            Log "*ERRO*: Sala $($Room.Displayname) já esta classificada como privativa"
+            Log "*ERRO*: Sala $($Room.Displayname) jÃ¡ esta classificada como privativa"
             exit 1
         }
 
@@ -283,23 +283,23 @@ function HandleTypeRoom($Room, $Option){
             exit 1
         }
 
-        Log "SUCESSO: Agora a sala $($Room.DisplayName) é uma Sala Privativa"
+        Log "SUCESSO: Agora a sala $($Room.DisplayName) Ã© uma Sala Privativa"
     }
 
-    # AÃ§Ã£o para tornar a sala Pública
+    # AÃƒÂ§ÃƒÂ£o para tornar a sala PÃºblica
     if($Option -eq "CL_SALA_PUBLICA"){
 
-        # Verifica se a sala já é Pública
+        # Verifica se a sala jÃ¡ Ã© PÃºblica
         if($RoomCalendar.AutomateProcessing -eq "AutoAccept"){
 
             try {
                 Set-CalendarProcessing -Identity $Room.Alias -AutomateProcessing "None" -AllBookInPolicy $true -AllRequestInPolicy $false
             } catch {
-                Log "*ERRO*: Ao redefinir o calendário da sala"
+                Log "*ERRO*: Ao redefinir o calendÃ¡rio da sala"
             }
 
         } else {
-            Log "*ERRO*: Sala $($Room.DisplayName) já está configurada como Pública"
+            Log "*ERRO*: Sala $($Room.DisplayName) jÃ¡ estÃ¡ configurada como PÃºblica"
             exit 1
         }
 
@@ -309,7 +309,7 @@ function HandleTypeRoom($Room, $Option){
         # Redefinindo o nome da Sala
         try{
             Set-Mailbox -Identity $Room.Alias -DisplayName $NewRoomName
-            Log "Sucesso, a Sala $($Room.DisplayName) agora é uma sala pública"
+            Log "Sucesso, a Sala $($Room.DisplayName) agora Ã© uma sala pÃºblica"
         } catch{
             Log "*ERRO*: Ao redefinir o nome da sala"
             exit 1
@@ -330,23 +330,23 @@ function HandleCapacityRoom($Room, $Capacity){
 
 function HandleDisplayNameRoom($Room, $NewRoomName){
 
-    # Alterando o Nome da Sala de Reunião
+    # Alterando o Nome da Sala de ReuniÃ£o
     try{
         Set-Mailbox -Identity $Room.Alias -DisplayName $NewRoomName
         Log "*SUCESSO*: Sala $($Room.DisplayName) foi renomeada para $NewRoomName"
     } catch {
-        Log "*ERRO*: Ao renomear o Número/Identificador da sala $($Room.DisplayName)"
+        Log "*ERRO*: Ao renomear o NÃºmero/Identificador da sala $($Room.DisplayName)"
     }
 }
 
 function HandleHiddenRoom($Room, $Option){
 
-    # Verificando qual Ã© o tipo de ação a ser tomada pela função
+    # Verificando qual ÃƒÂ© o tipo de aÃ§Ã£o a ser tomada pela funÃ§Ã£o
 
-    # Ação de ocultar sala
+    # AÃ§Ã£o de ocultar sala
     if($Option -eq "CL_OCULTAR_SALA"){
 
-        # Verificando se a sala está ví­sivel para ser ocultado
+        # Verificando se a sala estÃ¡ vÃ­Â­sivel para ser ocultado
         if(-not $($Room.HiddenFromAddressListsEnabled)){
 
             #Setando a caixa de correio como oculta
@@ -358,19 +358,19 @@ function HandleHiddenRoom($Room, $Option){
                 Log "*Erro*: ao Ocultar a sala no Outlook"
                 exit 1
             }
-        # Caso a sala já esteja oculta, lança erro
+        # Caso a sala jÃ¡ esteja oculta, lanÃ§a erro
         } else {
-            Log "*Erro*: ao Ocultar sala. Sala já esta oculta"
+            Log "*Erro*: ao Ocultar sala. Sala jÃ¡ esta oculta"
             exit 1
         }
 
-    # Ação de desocultar a sala
+    # AÃ§Ã£o de desocultar a sala
     } elseif ($Option -eq "CL_DESOCULTAR_SALA"){
 
-        # Verificando se a sala está oculta pra ser desocultada
+        # Verificando se a sala estÃ¡ oculta pra ser desocultada
         if($Room.HiddenFromAddressListsEnabled){
 
-            # Setando a caixa de correio como Ví­sivel
+            # Setando a caixa de correio como VÃ­Â­sivel
             try {
                 Set-Mailbox -Identity $Room.Alias -HiddenFromAddressListsEnabled $false
                 Log "*SUCESSO*: Sala $($Room.DisplayName) Desocultada da lista de salas"
@@ -380,13 +380,13 @@ function HandleHiddenRoom($Room, $Option){
                 exit 1
             }
         } else {
-            Log "*Erro*: Ao desocultar sala. Sala já está vísivel"
+            Log "*Erro*: Ao desocultar sala. Sala jÃ¡ estÃ¡ vÃ­sivel"
         }
 
     }
 }
 
-# ------------------- Funções de Processamento -------------------- #
+# ------------------- FunÃ§Ãµes de Processamento -------------------- #
 
 
 
@@ -424,7 +424,7 @@ function HandleHiddenRoom($Room, $Option){
             }
         }
     } else {
-        Log "$RoomAlias; *ERRO*: Sala $RoomAlias não foi localizada no exchange"
+        Log "$RoomAlias; *ERRO*: Sala $RoomAlias nÃ£o foi localizada no exchange"
 		exit 1
     }
     

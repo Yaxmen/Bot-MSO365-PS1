@@ -16,15 +16,12 @@ Import-Module ActiveDirectory
 
 #Definindo Constantes de acesso ao Sharepoint
 
-$tenantUrl = "https://petrobrasbr.sharepoint.com/teams/"
-#$tenantUrl = "https://petrobrasbrteste.sharepoint.com/teams/"
-#$AdminUrl = "https://petrobrasbrteste-admin.sharepoint.com/"
 
 #Definindo Constantes de credenciais
 
 # Credenciais de DEV
-<#$UserName = "SAN3MSOFFICE@petrobrasbrteste.petrobras.com.br"
-$PlainPassword = "Ror66406"
+<#$UserName = "email"
+$PlainPassword = ""
 $SecurePassword = ConvertTo-SecureString -String $PlainPassword -AsPlainText -Force
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $SecurePassword #>
 
